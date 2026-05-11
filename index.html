@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Code Generator</title>
+
+  <!-- QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 380px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #001f4d;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: #001f4d;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #qrcode {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .buttons {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>QR Code Generator</h2>
+
+    <input 
+      type="text" 
+      id="website" 
+      placeholder="Enter website link"
+      value="https://omoaddis.com"
+    />
+
+    <div class="buttons">
+      <button onclick="generateQR()">Generate QR</button>
+      <button onclick="downloadQR()">Download PNG</button>
+    </div>
+
+    <div id="qrcode"></div>
+  </div>
+
+  <script>
+    function generateQR() {
+      const website = document.getElementById("website").value;
+
+      // Clear previous QR
+      document.getElementById("qrcode").innerHTML = "";
+
+      // Generate new QR
+      new QRCode(document.getElementById("qrcode"), {
+        text: website,
+        width: 250,
+        height: 250,
+      });
+    }
+
+    function downloadQR() {
+      const qrCanvas = document.querySelector("#qrcode canvas");
+
+      if (!qrCanvas) {
+        alert("Please generate a QR code first.");
+        return;
+      }
+
+      // Convert canvas to PNG image
+      const imageURL = qrCanvas.toDataURL("image/png");
+
+      // Create download link
+      const downloadLink = document.createElement("a");
+      downloadLink.href = imageURL;
+      downloadLink.download = "qr-code.png";
+
+      // Trigger download
+      downloadLink.click();
+    }
+
+    // Generate default QR on page load
+    generateQR();
+  </script>
+
+</body>
+</html>
